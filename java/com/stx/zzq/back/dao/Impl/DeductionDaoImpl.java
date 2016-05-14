@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.stx.zzq.back.dao.DeductionDao;
 import com.stx.zzq.base.BaseDao;
 import com.stx.zzq.entities.Deduction;
+import com.stx.zzq.entities.Position;
 
 @Repository
 public class DeductionDaoImpl extends BaseDao implements DeductionDao {
@@ -80,8 +81,20 @@ public class DeductionDaoImpl extends BaseDao implements DeductionDao {
 		Query query = getSession().createQuery(hql);
 		query.setString("key", "%" + search_name + "%");
 		listDeduction = query.list();
-		
+
 		return listDeduction;
+	}
+
+	// 透过positionId查询数据
+	@Override
+	public List<Deduction> findByPosId(Position position) {
+		List<Deduction> allDeduc = new ArrayList<Deduction>();
+		String hql = "from Deduction deduc where deduc.positionId = ?";
+		Query query = getSession().createQuery(hql);
+		query.setString(0, position.getPositionId());
+		allDeduc = query.list();
+		
+		return allDeduc;
 	}
 
 }

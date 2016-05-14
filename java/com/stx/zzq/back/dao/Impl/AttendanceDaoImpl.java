@@ -44,6 +44,18 @@ public class AttendanceDaoImpl extends BaseDao implements AttendanceDao {
 		return exsist;
 	}
 
+	/* 查询某个员工的考情记录 */
+	@Override
+	public Attendance findByEmpId(String empId) {
+		// TODO Auto-generated method stub
+		String hql = "From Attendance where employeeId = ?";
+		Query query = getSession().createQuery(hql);
+		query.setString(0, empId);
+		Attendance exsist = new Attendance();
+		exsist = (Attendance) query.uniqueResult();
+		return exsist;
+	}
+
 	/* 查询某条的考情记录 */
 	@Override
 	public Attendance findById(String id) {
@@ -80,13 +92,13 @@ public class AttendanceDaoImpl extends BaseDao implements AttendanceDao {
 	public List<Attendance> searchByKey(String key, int code) {
 		List<Attendance> listAttendance = new ArrayList<Attendance>();
 		String hql = "";
-		if(code == ConstantsCode.CODE0) {
+		if (code == ConstantsCode.CODE0) {
 			hql = "from Attendance as att where att.employeeId like :key";
 		}
-		if(code == ConstantsCode.CODE1) {
+		if (code == ConstantsCode.CODE1) {
 			hql = "from Attendance as att where att.year like :key";
 		}
-		if(code == ConstantsCode.CODE2) {
+		if (code == ConstantsCode.CODE2) {
 			hql = "from Attendance as att where att.month like :key";
 		}
 		Query query = getSession().createQuery(hql);
@@ -111,16 +123,16 @@ public class AttendanceDaoImpl extends BaseDao implements AttendanceDao {
 	public List<Attendance> searchByKey(String key1, int code1, String key2, int code2) {
 		List<Attendance> listAttendance = new ArrayList<Attendance>();
 		String hql = "";
-		if(code1 == ConstantsCode.CODE0 && code2 == ConstantsCode.CODE1) {
+		if (code1 == ConstantsCode.CODE0 && code2 == ConstantsCode.CODE1) {
 			hql = "from Attendance as att where att.employeeId like :key1 and att.year like :key2";
 		}
-		if(code1 == ConstantsCode.CODE0 && code2 == ConstantsCode.CODE2) {
+		if (code1 == ConstantsCode.CODE0 && code2 == ConstantsCode.CODE2) {
 			hql = "from Attendance as att where att.employeeId like :key1 and att.month like :key2";
 		}
-		if(code1 == ConstantsCode.CODE1 && code2 == ConstantsCode.CODE2) {
+		if (code1 == ConstantsCode.CODE1 && code2 == ConstantsCode.CODE2) {
 			hql = "from Attendance as att where att.year like :key1 and att.month like :key2";
 		}
-		
+
 		Query query = getSession().createQuery(hql);
 		query.setString("key1", "%" + key1 + "%");
 		query.setString("key2", "%" + key2 + "%");

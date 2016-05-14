@@ -51,6 +51,7 @@ public class PositionAction extends BaseAction {
 		addPosition.setDepartmentName(dep.getDepartmentName());
 		addPosition.setPositionName(request.getParameter("positionName"));
 		addPosition.setBasicWage("待定中");
+		addPosition.setSecureReduce("待定中");
 		addPosition.setMemo(request.getParameter("memo"));
 		System.out.println(addPosition);
 		positionService.add(addPosition);
@@ -143,13 +144,21 @@ public class PositionAction extends BaseAction {
 	/* 根据id修改职位 */
 	public String updById() {
 		String id = request.getParameter("positionId");
-		Position upPos = new Position();
-		upPos.setPositionId(id);
+		Position upPos = null;
+		upPos = positionService.findById(id);
+		if(CommonUtils.isEmpty(upPos)) {
+			upPos = new Position();
+			upPos.put("fail", "不存在此职位");
+			writeJsonToResponse(upPos, response);
+			return "updById";
+		}
 		upPos.setPositionName(request.getParameter("positionName"));
 		Department dep = new Department();
 		dep = departService.findById(request.getParameter("departmentId"));
 		upPos.setDepartmentId(dep.getDepartmentId());
 		upPos.setDepartmentName(dep.getDepartmentName());
+		upPos.setBasicWage("待定中");
+		upPos.setSecureReduce("待定中");
 		upPos.setMemo(request.getParameter("memo"));
 		positionService.updById(upPos);
 		upPos.put("success", "修改成功");

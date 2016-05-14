@@ -41,6 +41,14 @@ public class AttendanceServiceImpl implements AttendanceService {
 		empAtt = attDao.findByEmpId(att);
 		return empAtt;
 	}
+	/* 查询某个员工的考情记录 */
+	@Override
+	public Attendance findByEmpId(String empId) {
+		// TODO Auto-generated method stub
+		Attendance empAtt = new Attendance();
+		empAtt = attDao.findByEmpId(empId);
+		return empAtt;
+	}
 
 	/* 查询某条的考情记录 */
 	@Override

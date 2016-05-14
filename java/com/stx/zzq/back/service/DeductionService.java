@@ -3,6 +3,7 @@ package com.stx.zzq.back.service;
 import java.util.List;
 
 import com.stx.zzq.entities.Deduction;
+import com.stx.zzq.entities.Position;
 
 public interface DeductionService {
 
@@ -26,5 +27,8 @@ public interface DeductionService {
 	
 	// 搜索
 	List<Deduction> searchByName(String search_name);
+	
+	// 透过positionId查询数据
+	List<Deduction> findByPosId(Position position);
 
 }

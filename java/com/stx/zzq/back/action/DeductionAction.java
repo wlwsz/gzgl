@@ -45,11 +45,11 @@ public class DeductionAction extends BaseAction {
 		addDeduction.setPositionName(position.getPositionName());
 		addDeduction.setDepartmentId(position.getDepartmentId());
 		addDeduction.setDepartmentName(position.getDepartmentName());
-		addDeduction.setSecureReduce(position.getSecureReduce()); /*request.getParameter("secureReduce")*/
+		addDeduction.setSecureReduce(position.getSecureReduce()); 
 		addDeduction.setTaxReduce(request.getParameter("taxReduce"));
 		addDeduction.setTrafficWage(request.getParameter("trafficWage"));
-
-		addDeduction.setTotalReduce("");
+		addDeduction.setTotalReduce("0");
+		
 		deductionService.add(addDeduction);
 		addDeduction.put("success", "保存成功");
 
@@ -62,6 +62,7 @@ public class DeductionAction extends BaseAction {
 		// TODO
 		List<Deduction> all = new ArrayList<Deduction>();
 		all = deductionService.findAll();
+		System.out.println(all);
 		writeJsonToResponse(all, response);
 		return "findAll";
 	}
@@ -86,7 +87,7 @@ public class DeductionAction extends BaseAction {
 		int id = Integer.parseInt(request.getParameter("deductionId"));
 		Deduction findById = new Deduction();
 		findById = deductionService.findById(id);
-
+		writeJsonToResponse(findById, response);
 		return "findById";
 	}
 
@@ -100,10 +101,10 @@ public class DeductionAction extends BaseAction {
 			writeJsonToResponse(updById, response);
 			return "updById";
 		}
-		updById.setDeductionId(Integer.parseInt(request.getParameter("deductionId")));
+//		updById.setDeductionId(Integer.parseInt(request.getParameter("deductionId")));
 		updById.setTaxReduce(request.getParameter("taxReduce"));
 		updById.setTrafficWage(request.getParameter("trafficWage"));
-		updById.setTotalReduce("1");
+		updById.setTotalReduce("0");
 		deductionService.updById(updById);
 		updById.put("success", "修改成功");
 		writeJsonToResponse(updById, response);

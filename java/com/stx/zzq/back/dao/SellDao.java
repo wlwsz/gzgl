@@ -12,6 +12,8 @@ public interface SellDao {
 	/* 查询全部销售 */
 	List<Sell> findAll();
 
+	Sell findByEmpId(String empId);
+
 	/* 删除销售 */
 	void delSell(Sell id);
 
@@ -20,10 +22,12 @@ public interface SellDao {
 
 	/* 通过id来删除数据 */
 	int delById(String id);
-	
+
 	/* 搜索 */
 	List<Sell> searchByKey(String key, int code);
+
 	List<Sell> searchByKey(String name, String year, String month);
+
 	List<Sell> searchByKey(String key1, int code1, String key2, int code2);
 
 }

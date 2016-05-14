@@ -66,10 +66,10 @@ public class SellDaoImpl extends BaseDao implements SellDao {
 			hql = "from Sell as sell where sell.employeeName like :key";
 		}
 		if(code == ConstantsCode.CODE1) {
-			hql = "from Sell as sell where sell.year like :key";
+			hql = "from Sell as sell where sell.sellYear like :key";
 		}
 		if(code == ConstantsCode.CODE2) {
-			hql = "from Sell as sell where sell.month like :key";
+			hql = "from Sell as sell where sell.sellMonth like :key";
 		}
 		Query query = getSession().createQuery(hql);
 		query.setString("key", "%" + key + "%");
@@ -80,7 +80,7 @@ public class SellDaoImpl extends BaseDao implements SellDao {
 	@Override
 	public List<Sell> searchByKey(String name, String year, String month) {
 		List<Sell> listSell = new ArrayList<Sell>();
-		String hql = "from Sell as sell where sell.employeeName like :key0 and sell.year like :key1 and sell.month like :key2";
+		String hql = "from Sell as sell where sell.employeeName like :key0 and sell.sellYear like :key1 and sell.sellMonth like :key2";
 		Query query = getSession().createQuery(hql);
 		query.setString("key0", "%" + name + "%");
 		query.setString("key1", year);
@@ -94,13 +94,13 @@ public class SellDaoImpl extends BaseDao implements SellDao {
 		List<Sell> listSell = new ArrayList<Sell>();
 		String hql = "";
 		if(code1 == ConstantsCode.CODE0 && code2 == ConstantsCode.CODE1) {
-			hql = "from Sell as sell where sell.employeeName like :key1 and sell.year like :key2";
+			hql = "from Sell as sell where sell.employeeName like :key1 and sell.sellYear like :key2";
 		}
 		if(code1 == ConstantsCode.CODE0 && code2 == ConstantsCode.CODE2) {
-			hql = "from Sell as sell where sell.employeeName like :key1 and sell.month like :key2";
+			hql = "from Sell as sell where sell.employeeName like :key1 and sell.sellMonth like :key2";
 		}
 		if(code1 == ConstantsCode.CODE1 && code2 == ConstantsCode.CODE2) {
-			hql = "from Sell as sell where sell.year like :key1 and sell.month like :key2";
+			hql = "from Sell as sell where sell.sellYear like :key1 and sell.sellMonth like :key2";
 		}
 		
 		Query query = getSession().createQuery(hql);
@@ -108,6 +108,16 @@ public class SellDaoImpl extends BaseDao implements SellDao {
 		query.setString("key2", "%" + key2 + "%");
 		listSell = (List<Sell>) query.list();
 		return listSell;
+	}
+
+	@Override
+	public Sell findByEmpId(String empId) {
+		// TODO Auto-generated method stub
+		String hql = "from Sell sell where sell.employeeId = ?";
+		Query query = getSession().createQuery(hql);
+		query.setString(0, empId);
+		Sell sell = (Sell) query.uniqueResult();
+		return sell;
 	}
 
 }

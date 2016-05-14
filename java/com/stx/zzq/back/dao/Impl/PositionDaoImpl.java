@@ -28,7 +28,6 @@ public class PositionDaoImpl extends BaseDao implements PositionDao {
 		// TODO 
 		String hql = "From Position";
 		List<Position> all = new ArrayList<Position>();
-//		all = (List<Position>) getHibernateTemplate().find(hql, null);
 		all = getSession().createQuery(hql).list();
 		return all;
 	}

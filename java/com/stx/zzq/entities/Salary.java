@@ -15,8 +15,14 @@ public class Salary extends BaseEntity {
 	private String employeeId;
 	/* 员工姓名 */
 	private String employeeName;
-	/* 工资发放月，给程序计算 */
+	/* 职位 编号 */
+	private String positionId;
+	/* 职位名称 */
+	private String positionName;
+	/* 考勤月份 */
 	private String month;
+	/* 考勤年份 */
+	private String year;
 	/* 基本工资 */
 	private String basicWage;
 	/* 加班工资 */
@@ -64,6 +70,14 @@ public class Salary extends BaseEntity {
 
 	public void setMonth(String month) {
 		put("month", month);
+	}
+
+	public String getYear() {
+		return (String) get("year");
+	}
+
+	public void setYear(String year) {
+		put("year", year);
 	}
 
 	public String getBasicWage() {
@@ -131,12 +145,30 @@ public class Salary extends BaseEntity {
 		put("memo", memo);
 	}
 
+	public String getPositionId() {
+		return (String) get("positionId");
+	}
+
+	public void setPositionId(String positionId) {
+		put("positionId", positionId);
+	}
+
+	public String getPositionName() {
+		return (String) get("positionName");
+	}
+
+	public void setPositionName(String positionName) {
+		put("positionName", positionName);
+	}
+
+
 	@Override
 	public String toString() {
 		return "Salary [salaryId=" + getSalaryId() + ", employeeId=" + getEmployeeId() + ", employeeName="
-				+ getEmployeeName() + ", month=" + getMonth() + ", basicWage=" + getBasicWage() + ", overtimeWage="
-				+ getOvertimeWage() + ", sellmoneyGet=" + getSellmoneyGet() + ", totalWage=" + getTotalWage()
-				+ ", totalReduce=" + getTotalReduce() + ", realWage=" + getRealWage() + ", editTime=" + getEditTime()
+				+ getEmployeeName() + ", month=" + getMonth() + ", year=" + getYear() + ", basicWage=" + getBasicWage()
+				+ ", overtimeWage=" + getOvertimeWage() + ", sellmoneyGet=" + sellmoneyGet + ", totalWage=" + totalWage
+				+ ", totalReduce=" + totalReduce + ", realWage=" + getRealWage() + ", editTime=" + getEditTime()
+				+ ", positionId=" + getPositionId() + ", positionName=" + getPositionName() 
 				+ ", memo=" + getMemo() + "]";
 	}
 

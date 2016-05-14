@@ -73,7 +73,13 @@ public class Deduction extends BaseEntity {
 	}
 
 	public void setTotalReduce(String totalReduce) {
-		totalReduce = String.valueOf((Float.parseFloat(this.getSecureReduce()) + Float.parseFloat(this.getTaxReduce()) - Float.parseFloat(this.getTrafficWage())));
+		if ("待定中".equals(this.getSecureReduce())) {
+			totalReduce = String
+					.valueOf(Float.parseFloat(this.getTaxReduce()) - Float.parseFloat(this.getTrafficWage()));
+		} else {
+			totalReduce = String.valueOf(Float.parseFloat(this.getSecureReduce())
+					+ Float.parseFloat(this.getTaxReduce()) - Float.parseFloat(this.getTrafficWage()));
+		}
 		put("totalReduce", totalReduce);
 	}
 

@@ -14,6 +14,7 @@ public interface AttendanceDao {
 
 	/* 查询某个员工的考情记录 */
 	Attendance findByEmpId(Attendance att);
+	Attendance findByEmpId(String empId);
 
 	/* 查询某条的考情记录 */
 	Attendance findById(String id);

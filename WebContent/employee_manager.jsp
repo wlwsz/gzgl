@@ -32,7 +32,7 @@
 	        sortOrder:'asc',  
 	        remoteSort:false,  
 	        columns : [ [ { field : 'employeeId', width : 40, title : '员工编号'}, { field : 'name', width : 30, align : 'left', title : '姓名'  
-	        }, { field : 'sex', width : 12, align : 'left', title : '性别' }, { field : 'cardNumber', width : 80, align : 'left', title : '身份证号'  
+	        }, { field : 'sex', width : 15, align : 'left', title : '性别' }, { field : 'cardNumber', width : 80, align : 'left', title : '身份证号'  
 	        }, { field : 'birthday', width : 40, align : 'left', title : '生日' }, { field : 'positionId', hidden : true, title : '职位编号'
 	        }, { field : 'positionName', width : 35, align : 'left', title : '职位名称' }, { field : 'nation',  width : 23, align : 'left', title : '国籍'  
 	        }, { field : 'schoolRecord', width : 23, align : 'left', title : '学历' }, { field : 'graduateSchool', width : 50, align : 'left', title : '毕业学校'  

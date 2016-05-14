@@ -3,6 +3,7 @@ package com.stx.zzq.back.dao;
 import java.util.List;
 
 import com.stx.zzq.entities.Deduction;
+import com.stx.zzq.entities.Position;
 
 public interface DeductionDao {
 
@@ -11,7 +12,7 @@ public interface DeductionDao {
 
 	// 查询全部
 	List<Deduction> findAll();
-	
+
 	// id查询
 	Deduction findById(int id);
 
@@ -23,8 +24,11 @@ public interface DeductionDao {
 
 	// 通过positionId删除
 	Deduction findByPosId(String posId);
-	
+
 	// 搜索
 	List<Deduction> searchByName(String search_name);
+
+	// 透过positionId查询数据
+	List<Deduction> findByPosId(Position position);
 
 }

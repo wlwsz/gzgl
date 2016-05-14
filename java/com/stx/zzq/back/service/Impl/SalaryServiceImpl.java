@@ -33,7 +33,7 @@ public class SalaryServiceImpl implements SalaryService {
 	@Override
 	public void add(Salary add) {
 		// TODO Auto-generated method stub
-		countWage(add);
+		// countWage(add);
 		salDao.add(add);
 	}
 
@@ -73,7 +73,7 @@ public class SalaryServiceImpl implements SalaryService {
 	@Override
 	public void updById(Salary updById) {
 		// TODO Auto-generated method stub
-		countWage(updById);
+		// countWage(updById);
 		salDao.updById(updById);
 	}
 

@@ -9,12 +9,14 @@ import org.springframework.stereotype.Controller;
 
 import com.stx.zzq.back.service.EmployeeService;
 import com.stx.zzq.back.service.PositionService;
+import com.stx.zzq.back.service.SalaryService;
 import com.stx.zzq.base.BaseAction;
 import com.stx.zzq.common.utils.CommonUtils;
 import com.stx.zzq.common.utils.ConstantsCode;
 import com.stx.zzq.entities.Department;
 import com.stx.zzq.entities.Employee;
 import com.stx.zzq.entities.Position;
+import com.stx.zzq.entities.Salary;
 
 @Scope("prototype")
 @Controller("back.EmployeeAction")
@@ -24,6 +26,8 @@ public class EmployeeAction extends BaseAction {
 	private EmployeeService empService;
 	@Autowired
 	private PositionService posService;
+	@Autowired
+	private SalaryService salaryService;
 
 	/* 此处是设置页数和显示的条数 */
 	private Integer rows;
@@ -51,9 +55,23 @@ public class EmployeeAction extends BaseAction {
 		addEmp.setMemo(request.getParameter("memo"));
 		addEmp.setIconPath("/bootstrap/images/01.jpg");
 		empService.add(addEmp);
+		// 给员工实例化工资表
+		createSalary(addEmp);
+		
 		addEmp.put("success", "添加成功");
 		writeJsonToResponse(addEmp, response);
 		return "add";
+	}
+
+	/* 工资计算表 */
+	private void createSalary(Employee employee) {
+		Salary salary = new Salary();
+		salary.setEmployeeId(employee.getEmployeeId());
+		salary.setEmployeeName(employee.getName());
+		salary.setPositionId(employee.getPositionId());
+		salary.setPositionName(employee.getPositionName());
+		
+		salaryService.add(salary);
 	}
 
 	/* 查询全部员工 */
@@ -106,7 +124,7 @@ public class EmployeeAction extends BaseAction {
 		writeJsonToResponse(listEmployee, response);
 		return SUCCESS;
 	}
-	
+
 	/* 修改员工信息员工 */
 	public String updEmp() {
 		Employee updEmp = new Employee();
@@ -132,7 +150,7 @@ public class EmployeeAction extends BaseAction {
 		writeJsonToResponse(updEmp, response);
 		return "updEmp";
 	}
-	
+
 	/* 通过id修改员工 */
 	public String updById() {
 		Employee updById = new Employee();
@@ -158,7 +176,7 @@ public class EmployeeAction extends BaseAction {
 		writeJsonToResponse(updById, response);
 		return "updById";
 	}
-	
+
 	/* 通过id删除员工 */
 	public String delById() {
 		Employee delById = new Employee();

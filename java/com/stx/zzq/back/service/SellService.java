@@ -12,6 +12,8 @@ public interface SellService {
 
 	/* 查询全部销售 */
 	List<Sell> findAll();
+	
+	Sell findByEmpId(String empId);
 
 	/* 删除销售 */
 	void delSell(Sell id);

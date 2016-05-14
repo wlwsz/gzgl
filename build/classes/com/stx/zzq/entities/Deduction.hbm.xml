@@ -12,6 +12,7 @@
 		<property name="departmentId" type="java.lang.String" column="department_id" />
 		<property name="departmentName" type="java.lang.String" column="department_name" />
 		<property name="trafficWage" column="traffic_wage" type="java.lang.String" />
+		<property name="secureReduce" column="secure_reduce" type="java.lang.String" />
 		<property name="taxReduce" column="tax_reduce" type="java.lang.String" />
  		<property name="totalReduce" column="total_reduce" type="java.lang.String" />
 	</class>

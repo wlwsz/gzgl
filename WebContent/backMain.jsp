@@ -25,13 +25,12 @@
                                             {"menuid":"15","menuname":"考勤管理","icon":"icon-users","url":"<%=path%>/attendance_manager.jsp"},
                                             {"menuid":"16","menuname":"销售管理","icon":"icon-users","url":"<%=path%>/sell_manager.jsp"},
                                             {"menuid":"17","menuname":"扣税管理","icon":"icon-users","url":"<%=path%>/deduction_manager.jsp"},
-                                            {"menuid":"18","menuname":"工资列表","icon":"icon-users","url":"<%=path%>/salary_manager.jsp"},
-                                            {"menuid":"18","menuname":"员工工资","icon":"icon-role","url":"#"},
+                                            {"menuid":"18","menuname":"角色管理","icon":"icon-role","url":"#"},
                                             {"menuid":"19","menuname":"权限设置","icon":"icon-set","url":"#"},
                                             {"menuid":"20","menuname":"系统日志","icon":"icon-log","url":"#"}
                                         ]
                                 },{"menuid":"2","icon":"icon-sys","menuname":"工资管理",
-                                    "menus":[{"menuid":"22","menuname":"工资列表","icon":"icon-users","url":"<%=path%>/wageInfo/position_manager.jsp"},
+                                    "menus":[{"menuid":"22","menuname":"员工工资","icon":"icon-users","url":"<%=path%>/wageInfo/salary_manager.jsp"},
                                              {"menuid":"23","menuname":"工资计算方式","icon":"icon-users","url":"<%=path%>/wageInfo/wage_manager.jsp"},
                                              {"menuid":"24","menuname":"其他管理","icon":"icon-users","url":"#"},
                                         ]

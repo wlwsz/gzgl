@@ -78,4 +78,12 @@ public class SellServiceImpl implements SellService {
 		listSell = sellDao.searchByKey(key1, code1, key2, code2);
 		return listSell;
 	}
+
+	@Override
+	public Sell findByEmpId(String empId) {
+		// TODO Auto-generated method stub
+		Sell sell = new Sell();
+		sell = sellDao.findByEmpId(empId);
+		return sell;
+	}
 }

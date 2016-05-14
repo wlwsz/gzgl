@@ -9,7 +9,10 @@
 		</id>
 		<property name="employeeId" type="java.lang.String" column="employee_id" />
 		<property name="employeeName" type="java.lang.String" column="employee_name" />
+		<property name="positionId" type="java.lang.String" column="position_id" />
+		<property name="positionName" type="java.lang.String" column="position_name" />
 		<property name="month" column="month" type="java.lang.String" />
+		<property name="year" column="year" type="java.lang.String" />
 		<property name="basicWage" column="basic_wage" type="java.lang.String" />
 		<property name="overtimeWage" column="overtime_wage" type="java.lang.String" />
 		<property name="sellmoneyGet" column="sellmoney_get" type="java.lang.String" />

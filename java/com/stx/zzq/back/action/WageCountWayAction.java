@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.stx.zzq.back.service.DeductionService;
 import com.stx.zzq.back.service.PositionService;
 import com.stx.zzq.back.service.WageCountWayService;
 import com.stx.zzq.base.BaseAction;
 import com.stx.zzq.common.utils.CommonUtils;
 import com.stx.zzq.common.utils.ConstantsCode;
+import com.stx.zzq.entities.Deduction;
 import com.stx.zzq.entities.Position;
 import com.stx.zzq.entities.WageCountWay;
 
@@ -25,6 +27,8 @@ public class WageCountWayAction extends BaseAction {
 	private WageCountWayService wageCountWayService;
 	@Autowired
 	private PositionService positionService;
+	@Autowired
+	private DeductionService deductionService;
 
 	// 添加
 	public String add() {
@@ -52,8 +56,23 @@ public class WageCountWayAction extends BaseAction {
 		position.setBasicWage(wageCountWay.getBasicWage());
 		position.setSecureReduce(wageCountWay.getSecureReduce());
 		positionService.updById(position);
-
+		// 修改扣税中的五险一金
+		updateDeduction(position);
+		
 		return "add";
+	}
+	/*去修改扣税表中的数据*/
+	private void updateDeduction(Position position) {
+		List<Deduction> allDeduc = new ArrayList<Deduction>();
+		if(CommonUtils.isEmpty(allDeduc)) {
+			return ;
+		}
+		// 不为空则进行修改
+		for(Deduction deduction : allDeduc) {
+			deduction.setSecureReduce(position.getSecureReduce());
+			deduction.setTotalReduce("0");
+			deductionService.updById(deduction);
+		}
 	}
 
 	// 查询所有

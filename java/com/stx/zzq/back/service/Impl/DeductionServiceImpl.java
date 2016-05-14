@@ -10,6 +10,7 @@ import com.stx.zzq.back.dao.DeductionDao;
 import com.stx.zzq.back.service.AttendanceService;
 import com.stx.zzq.back.service.DeductionService;
 import com.stx.zzq.entities.Deduction;
+import com.stx.zzq.entities.Position;
 
 @Service
 public class DeductionServiceImpl implements DeductionService {
@@ -76,6 +77,15 @@ public class DeductionServiceImpl implements DeductionService {
 		listDeduction = deductionDao.searchByName(search_name);
 		
 		return listDeduction;
+	}
+	
+	// 透过positionId查询数据
+	@Override
+	public List<Deduction> findByPosId(Position position) {
+		List<Deduction> allDeduc = new ArrayList<Deduction>();
+		allDeduc = deductionDao.findByPosId(position);
+		
+		return allDeduc;
 	}
 
 }
