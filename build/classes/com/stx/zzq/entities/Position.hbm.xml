@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stx.zzq.entities">
+	<class name="Position" table="position">
+		<id name="positionId" column="position_id" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="departmentId" column="department_id" type="java.lang.String" />
+		<property name="departmentName" column="department_name" type="java.lang.String" />
+		<property name="positionName" column="position_name" type="java.lang.String" />
+		<property name="basicWage" column="basic_wage" type="java.lang.String" />
+		<property name="secureReduce" column="secure_reduce" type="java.lang.String" />
+		<property name="level" column="level" type="java.lang.String" />
+		<property name="memo" type="java.lang.String" column="memo"></property>
+	</class>
+</hibernate-mapping>
+ 

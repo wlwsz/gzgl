@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 配置常量 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="true" />
+	<!-- 配置模块 -->
+	<package name="adm" namespace="/back" extends="struts-default">
+		<!-- 配置拦截器 -->
+		<interceptors>
+			<!-- 配置未登录进行操作的拦截器 -->
+			<interceptor name="loginInterceptor" class="back.LoginInterceptor"/>
+				<!-- <param name="param">测试参数</param>
+			</interceptor> -->
+			<!-- 重新封装一个默认的拦截器栈 -->
+			<interceptor-stack name="myDefaultStack">
+				<interceptor-ref name="loginInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 为这个包设置默认的拦截器栈 -->
+		<default-interceptor-ref name="myDefaultStack" />
+		<!-- 管理员 -->
+		<action name="adm_*" class="back.AdminAction" method="{1}">
+			<result name="login">/Login.jsp</result>
+			<result name="register">/register.jsp</result>
+			<result name="loginSuccess">/backMain.jsp</result>
+			<result name="add">/admin_manager.jsp</result>
+			<result name="findAll">/admin_manager.jsp</result>
+			<result name="findByAdmin">/admin_manager.jsp</result>
+			<result name="findByName">/admin_manager.jsp</result>
+			<result name="searchByName">/admin_manager.jsp</result>
+			<result name="delByAdmin">/admin_manager.jsp</result>
+			<result name="delByName">/admin_manager.jsp</result>
+			<result name="updPassword">/admin_manager.jsp</result>
+			<result name="updPasswordAjax" type="redirect">/Login.jsp</result>
+			<result name="getPersonalView">/personnalPage.jsp</result>
+		</action>
+		<!-- 部门管理 -->
+		<action name="dep_*" class="back.DepartmentAction" method="{1}">
+			<result name="view">/department_manager.jsp</result>
+			<result name="add">/department_manager.jsp</result>
+			<result name="findAll">/department_manager.jsp</result>
+			<result name="delDep">/department_manager.jsp</result>
+			<result name="delById">/department_manager.jsp</result>
+			<result name="updById">/department_manager.jsp</result>
+			<result name="updDep">/department_manager.jsp</result>
+			<result name="success">/department_manager.jsp</result>
+		</action>
+		<!-- 职位管理 -->
+		<action name="pos_*" class="back.PositionAction" method="{1}">
+			<result name="add">/position_manager.jsp</result>
+			<result name="findAll">/position_manager.jsp</result>
+			<result name="findById">/position_manager.jsp</result>
+			<result name="updById">/position_manager.jsp</result>
+			<result name="delPos">/position_manager.jsp</result>
+			<result name="delById">/position_manager.jsp</result>
+			<result name="success">/position_manager.jsp</result>
+		</action>
+		<!-- 员工管理 -->
+		<action name="emp_*" class="back.EmployeeAction" method="{1}">
+			<result name="add">/employee_manager.jsp</result>
+			<result name="findAll">/employee_manager.jsp</result>
+			<result name="findById">/employee_manager.jsp</result>
+			<result name="updById">/employee_manager.jsp</result>
+			<result name="delById">/employee_manager.jsp</result>
+			<result name="success">/employee_manager.jsp</result>
+		</action>
+		<!-- 考勤管理 -->
+		<action name="att_*" class="back.AttendanceAction" method="{1}">
+			<result name="add">/attendance_manager.jsp</result>
+			<result name="findAll">/attendance_manager.jsp</result>
+			<result name="findById">/attendance_manager.jsp</result>
+			<result name="updById">/attendance_manager.jsp</result>
+			<result name="delById">/attendance_manager.jsp</result>
+			<result name="success">/attendance_manager.jsp</result>
+		</action>
+		<!-- 工资管理 -->
+		<action name="sal_*" class="back.SalaryAction" method="{1}">
+			<result name="add">/attendance_manager.jsp</result>
+			<result name="findAll">/attendance_manager.jsp</result>
+			<result name="findByEmpId">/attendance_manager.jsp</result>
+			<result name="updById">/attendance_manager.jsp</result>
+			<result name="delById">/attendance_manager.jsp</result>
+			<result name="success">/attendance_manager.jsp</result>
+		</action>
+		<!-- 工资计算方式管理 -->
+		<action name="way_*" class="action.WageCountWayAction" method="{1}">
+			<result name="add">/wageInfo/wage_manager.jsp</result>
+			<result name="findAll">/wageInfo/wage_manager.jsp</result>
+			<result name="updById">/wageInfo/wage_manager.jsp</result>
+			<result name="delById">/wageInfo/wage_manager.jsp</result>
+			<result name="success">/wageInfo/wage_manager.jsp</result>
+		</action>
+		<!-- 扣税管理 -->
+		<action name="ded_*" class="back.DeductionAction" method="{1}">
+			<result name="add">/attendance_manager.jsp</result>
+			<result name="findAll">/attendance_manager.jsp</result>
+			<result name="findByEmpId">/attendance_manager.jsp</result>
+			<result name="updById">/attendance_manager.jsp</result>
+			<result name="delById">/attendance_manager.jsp</result>
+			<result name="success">/attendance_manager.jsp</result>
+		</action>
+		<!-- 员工等级 -->
+		<action name="gra_*" class="back.GradeAction" method="{1}">
+			<result></result>
+		</action>
+		<!-- 销售管理 -->
+		<action name="sel_*" class="back.SellAction" method="{1}">
+			<result name="add">/sell_manager.jsp</result>
+			<result name="findAll">/sell_manager.jsp</result>
+			<result name="findById">/sell_manager.jsp</result>
+			<result name="updById">/sell_manager.jsp</result>
+			<result name="delById">/sell_manager.jsp</result>
+			<result name="success">/sell_manager.jsp</result>
+		</action>
+		<!-- 操作管理 -->
+		<action name="ope_*" class="back.OperationAction" method="{1}">
+			<result></result>
+		</action>
+	</package>
+
+	<!-- 头像上传功能 -->
+	<package name="common" namespace="/back" extends="struts-default">
+		<!-- 头像上传 -->
+		<action name="icon_*" class="common.IconAction" method="{1}">
+			<result name="success">/uploadIcon.jsp</result>
+		</action>
+		<!-- 验证码 -->
+		<action name="verifycode" class="common.RandomValidateCode" method="verifycode"></action>
+		<!-- excel导出管理 -->
+		<action name="exportExcel" class="common.ExportExcelAction" method="exportExcel"></action>
+	</package>
+</struts>

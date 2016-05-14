@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stx.zzq.entities">
+	<class name="Employee" table="employee">
+		<id name="employeeId" column="employee_id" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="name" column="name" type="java.lang.String" />
+		<property name="cardNumber" column="card_number" type="java.lang.String" />
+		<property name="nation" column="nation" type="java.lang.String" />
+		<property name="sex" column="sex" type="java.lang.String" />
+		<property name="birthday" column="birthday" type="java.lang.String" />
+		<property name="graduateSchool" column="graduate_school"
+			type="java.lang.String" />
+		<property name="schoolRecord" column="shcool_record" type="java.lang.String" />
+		<property name="telephone" column="telephone" type="java.lang.String" />
+		<property name="email" column="email" type="java.lang.String" />
+		<property name="editTime" column="edit_time" type="java.lang.String" />
+		<property name="iconPath" column="icon_path" type="java.lang.String" />
+		<property name="memo" column="memo" type="java.lang.String" />
+		<property name="positionId" column="position_id" type="java.lang.String"/>
+		<property name="positionName" column="position_name" type="java.lang.String"/>
+	</class>
+</hibernate-mapping>
+ 

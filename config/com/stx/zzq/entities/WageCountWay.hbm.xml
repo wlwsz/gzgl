@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stx.zzq.entities">
+	<class name="WageCountWay" table="count_way">
+		<id name="id" column="id" type="java.lang.Integer">
+			<generator class="native" />
+		</id>
+		<property name="positionId" type="java.lang.String" column="position_id" />
+		<property name="positionName" type="java.lang.String" column="position_name" />
+		<property name="ohMoneny" column="oh_moneny" type="java.lang.String" />
+		<property name="cdMoneny" column="cd_moneny" type="java.lang.String" />
+		<property name="ztMoneny" column="zt_moneny" type="java.lang.String" />
+		<property name="kgMoneny" column="kg_moneny" type="java.lang.String" />
+		<property name="secureReduce" column="secure_reduce" type="java.lang.String" />
+		<property name="basicWage" column="basic_wage" type="java.lang.String" />
+		<property name="percent" column="percent" type="java.lang.String" />
+	</class>
+</hibernate-mapping>
+ 

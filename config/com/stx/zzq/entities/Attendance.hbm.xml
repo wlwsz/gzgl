@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stx.zzq.entities">
+	<class name="Attendance" table="attendance">
+		<id name="attendanceId" column="attendance_id" type="java.lang.Integer">
+			<generator class="native" />
+		</id>
+		<property name="year" column="year" type="java.lang.String" />
+		<property name="month" column="month" type="java.lang.String" />
+		<property name="overHour" column="over_hour" type="java.lang.String" />
+		<property name="chidao" column="chidao" type="java.lang.String" />
+		<property name="zaotui" column="zaotui" type="java.lang.String" />
+		<property name="kuangGong" column="kuang_gong" type="java.lang.String" />
+		<property name="employeeId" type="java.lang.String" column="employee_id" />
+		<property name="employeeName" type="java.lang.String" column="employee_name" />
+		<property name="memo" column="memo" type="java.lang.String" />
+	</class>
+</hibernate-mapping>
+ 

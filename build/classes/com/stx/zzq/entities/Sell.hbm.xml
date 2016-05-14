@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stx.zzq.entities">
+	<class name="Sell" table="sell">
+		<id name="sellId" column="sell_id" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="sellYear" column="sell_year" type="java.lang.String" />
+		<property name="sellMonth" column="sell_month" type="java.lang.String" />
+		<property name="sellMoney" column="sell_money" type="java.lang.String" />
+		<property name="employeeId" type="java.lang.String" column="employee_id" />
+		<property name="employeeName" type="java.lang.String" column="employee_name" />
+		<property name="memo" type="java.lang.String" column="memo" />
+	</class>
+</hibernate-mapping>
+ 

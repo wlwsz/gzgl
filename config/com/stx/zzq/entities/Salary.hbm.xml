@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stx.zzq.entities">
+	<class name="Salary" table="salary">
+		<id name="salaryId" column="salary_id" type="java.lang.Integer">
+			<generator class="native" />
+		</id>
+		<property name="employeeId" type="java.lang.String" column="employee_id" />
+		<property name="employeeName" type="java.lang.String" column="employee_name" />
+		<property name="month" column="month" type="java.lang.String" />
+		<property name="basicWage" column="basic_wage" type="java.lang.String" />
+		<property name="overtimeWage" column="overtime_wage" type="java.lang.String" />
+		<property name="sellmoneyGet" column="sellmoney_get" type="java.lang.String" />
+		<property name="totalWage" column="total_wage" type="java.lang.String" />
+ 		<property name="totalReduce" column="total_reduce" type="java.lang.String" />
+		<property name="realWage" column="real_wage" type="java.lang.String" />
+		<property name="editTime" column="edit_time" type="java.lang.String" />
+		<property name="memo" column="memo" type="java.lang.String" />
+	</class>
+</hibernate-mapping>
+ 

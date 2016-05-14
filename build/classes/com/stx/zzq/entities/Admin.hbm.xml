@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.stx.zzq.entities">
+	<class name="Admin" table="admin">
+		<id name="username" type="java.lang.String" column="username">
+			<generator class="assigned" />
+		</id>
+		<property name="password" column="password" type="java.lang.String" />
+		<property name="iconPath" column="icon_path" type="java.lang.String" />
+	</class>
+</hibernate-mapping>
