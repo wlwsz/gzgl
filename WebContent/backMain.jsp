@@ -30,8 +30,8 @@
                                             {"menuid":"20","menuname":"系统日志","icon":"icon-log","url":"#"}
                                         ]
                                 },{"menuid":"2","icon":"icon-sys","menuname":"工资管理",
-                                    "menus":[{"menuid":"22","menuname":"员工工资","icon":"icon-users","url":"<%=path%>/wageInfo/salary_manager.jsp"},
-                                             {"menuid":"23","menuname":"工资计算方式","icon":"icon-users","url":"<%=path%>/wageInfo/wage_manager.jsp"},
+                                    "menus":[{"menuid":"23","menuname":"工资计算","icon":"icon-users","url":"<%=path%>/wageInfo/wage_manager.jsp"},
+                                             {"menuid":"22","menuname":"员工工资","icon":"icon-users","url":"<%=path%>/wageInfo/salary_manager.jsp"},
                                              {"menuid":"24","menuname":"其他管理","icon":"icon-users","url":"#"},
                                         ]
                                 },{"menuid":"3","icon":"icon-sys","menuname":"导出管理",

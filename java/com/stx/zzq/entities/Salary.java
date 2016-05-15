@@ -125,7 +125,6 @@ public class Salary extends BaseEntity {
 	}
 
 	public void setRealWage(String realWage) {
-		realWage = String.valueOf((Float.parseFloat(this.getTotalWage()) - Float.parseFloat(this.getTotalReduce())));
 		put("realWage", realWage);
 	}
 
@@ -161,15 +160,13 @@ public class Salary extends BaseEntity {
 		put("positionName", positionName);
 	}
 
-
 	@Override
 	public String toString() {
-		return "Salary [salaryId=" + getSalaryId() + ", employeeId=" + getEmployeeId() + ", employeeName="
-				+ getEmployeeName() + ", month=" + getMonth() + ", year=" + getYear() + ", basicWage=" + getBasicWage()
-				+ ", overtimeWage=" + getOvertimeWage() + ", sellmoneyGet=" + sellmoneyGet + ", totalWage=" + totalWage
-				+ ", totalReduce=" + totalReduce + ", realWage=" + getRealWage() + ", editTime=" + getEditTime()
-				+ ", positionId=" + getPositionId() + ", positionName=" + getPositionName() 
-				+ ", memo=" + getMemo() + "]";
+		return "Salary [salaryId=" + getSalaryId() + ", employeeId=" + getEmployeeId() + ", employeeName=" + getEmployeeName()
+				+ ", positionId=" + getPositionId() + ", positionName=" + getPositionName() + ", month=" + getMonth() + ", year="
+				+ getYear() + ", basicWage=" + getBasicWage() + ", overtimeWage=" + getOvertimeWage() + ", sellmoneyGet="
+				+ getSellmoneyGet() + ", totalWage=" + getTotalWage() + ", totalReduce=" + getTotalReduce() + ", realWage=" + getRealWage()
+				+ ", editTime=" + getEditTime() + ", memo=" + getMemo() + "]";
 	}
 
 }

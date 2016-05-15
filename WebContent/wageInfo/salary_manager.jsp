@@ -15,29 +15,58 @@
   <link rel="stylesheet" type="text/css" href="<%=path %>/easyui/demo/demo.css">
   <script type="text/javascript" src="<%=path %>/easyui/jquery.min.js"></script>
   <script type="text/javascript" src="<%=path %>/easyui/jquery.easyui.min.js"></script>
+  <script type="text/javascript">
+	//先请求所有数据
+	$(document).ready(function() {
+		 $('#dg').datagrid({  
+			 //搜索前,触发此action请求所有用户信息
+	        url:'<%=path%>/back/sal_findAll.action',   
+	        loadMsg:'数据加载中......',  
+	        fitColumns:true,//允许表格自动缩放,以适应父容器  
+	        sortName:'employeeId',  
+	        sortOrder:'asc',  
+	        remoteSort:false,  
+	        columns : [ [ { field : 'salaryId', hidden : true, title : '编号'}, { field : 'employeeId', width : 40, title : '员工编号'  
+	        }, { field : 'employeeName', width : 40, align : 'left', title : '姓名' }, { field : 'basicWage', width : 40, align : 'left', title : '基本工资' 
+	        }, { field : 'overtimeWage', width : 40, align : 'left', title : '加班工资(元)' }, { field : 'sellmoneyGet', width : 20, align : 'left', title : '提成'  
+	        }, { field : 'totalWage', width : 30, align : 'left', title : '总工资' }, { field : 'totalReduce', width : 20, align : 'left', title : '扣税' 
+	        }, { field : 'realWage', width : 30, align : 'left', title : '实际工资' }, { field : 'month', width : 20, align : 'left', title : '月份' 
+	        }, { field : 'year', width : 20, align : 'left', title : '年份' }, { field : 'editTime', width : 40, align : 'left', title : '编辑时间' 
+	        }, { field : 'memo', width : 40, align : 'left', title : '旷工' 
+	        } ] ],
+	        pagination : true,  
+	        rownumbers : true
+	    }); 
+	});
+	// 搜索
+	function searchWageWay(){
+		var s_name = $('#s_positionName').val();
+		$('#dg').datagrid({
+			url:'<%=path %>/back/sal_searchByKey.action?positionName=' + s_name,
+			loadMsg:'数据加载中......',
+			fitColumns:true,//允许表格自动缩放,以适应父容器  
+			sortName:'employeeId',  
+	        sortOrder:'asc',  
+	        remoteSort:false,  
+	        columns : [ [ { field : 'salaryId', hidden : true, title : '编号'}, { field : 'employeeId', width : 40, title : '员工编号'  
+	        }, { field : 'employeeName', width : 40, align : 'left', title : '姓名' }, { field : 'basicWage', width : 40, align : 'left', title : '基本工资' 
+	        }, { field : 'overtimeWage', width : 40, align : 'left', title : '加班工资(元)' }, { field : 'sellmoneyGet', width : 20, align : 'left', title : '提成'  
+	        }, { field : 'totalWage', width : 30, align : 'left', title : '总工资' }, { field : 'totalReduce', width : 20, align : 'left', title : '扣税' 
+	        }, { field : 'realWage', width : 30, align : 'left', title : '实际工资' }, { field : 'month', width : 20, align : 'left', title : '月份' 
+	        }, { field : 'year', width : 20, align : 'left', title : '年份' }, { field : 'editTime', width : 40, align : 'left', title : '编辑时间' 
+	        }, { field : 'memo', width : 40, align : 'left', title : '旷工' 
+	        } ] ],
+	        pagination : true,  
+	        rownumbers : true
+		});				
+	}
+  
+  </script>
 </head>
 <body>
-        
-        <table id="dg" title="工资列表" class="easyui-datagrid" style="width:auto;height:465px;"
-        url="<%=path %>/back/sal_findAll.action"
-        toolbar="#toolbar" pagination="true"
-        rownumbers="true" fitColumns="true" singleSelect="true">
-        <thead>
-            <tr>
-                <th field="salaryId" hidden="true">编号</th>
-                <th field="employeeId" width="40">员工编号</th>
-                <th field="employeeName" width="40">姓名</th>
-                <th field=basicWage width="40">基本工资</th>
-                <th field="overtimeWage" width="40">加班工资</th>
-                <th field="sellmoneyGet" width="40">提成</th>
-                <th field="totalWage" width="40">总工资</th>
-                <th field="totalReduce" width="40">扣税</th>
-                <th field="realWage" width="40">实际工资</th>
-                <th field="month" width="40">月份</th>
-                <th field="editTime" width="40">编辑时间</th>
-                <th field="memo" width="40">说明</th>
-            </tr>
-        </thead>
+     <table id="dg" title="员工列表" class="easyui-datagrid" style="width: 1300px; height: 465px;" toolbar="#toolbar"
+		pagination="true" rownumbers="true" fitColumns="true"
+		singleSelect="true">
     </table>
     <div id="toolbar">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>

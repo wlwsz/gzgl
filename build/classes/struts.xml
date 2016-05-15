@@ -79,12 +79,12 @@
 		</action>
 		<!-- 工资管理 -->
 		<action name="sal_*" class="back.SalaryAction" method="{1}">
-			<result name="add">/attendance_manager.jsp</result>
-			<result name="findAll">/attendance_manager.jsp</result>
-			<result name="findByEmpId">/attendance_manager.jsp</result>
-			<result name="updById">/attendance_manager.jsp</result>
-			<result name="delById">/attendance_manager.jsp</result>
-			<result name="success">/attendance_manager.jsp</result>
+			<result name="add">/salary_manager.jsp</result>
+			<result name="findAll">/wageInfo/salary_manager.jsp</result>
+			<result name="findByEmpId">/wageInfo/salary_manager.jsp</result>
+			<result name="updById">/wageInfo/salary_manager.jsp</result>
+			<result name="delById">/salary_manager.jsp</result>
+			<result name="success">/wageInfo/salary_manager.jsp</result>
 		</action>
 		<!-- 工资计算方式管理 -->
 		<action name="way_*" class="action.WageCountWayAction" method="{1}">

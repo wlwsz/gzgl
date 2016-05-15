@@ -28,9 +28,9 @@
 	        remoteSort:false,  
 	        columns : [ [ { field : 'id', hidden : true, title : '编号'}, { field : 'positionId',hidden : true, title : '职位编号'  
 	        }, { field : 'positionName', width : 30, align : 'left', title : '职位名称' }, { field : 'basicWage', width : 20, align : 'left', title : '基本工资' 
-	        }, { field : 'ohMoneny', width : 30, align : 'left', title : '加班费(每小时/元)' }, { field : 'secureReduce', width : 20, align : 'left', title : '五险一金'  
-	        }, { field : 'cdMoneny', width : 20, align : 'left', title : '迟到' }, { field : 'ztMoneny', width : 20, align : 'left', title : '早退' 
-	        }, { field : 'kgMoneny', width : 20, align : 'left', title : '旷工' }, { field : 'percent',  width : 20, align : 'left', title : '提成(%)'  
+	        }, { field : 'cdMoneny', width : 23, align : 'left', title : '迟到(每小时/元)' }, { field : 'ztMoneny', width : 23, align : 'left', title : '早退(每小时/元)' 
+	        }, { field : 'kgMoneny', width : 23, align : 'left', title : '旷工(每小时/元)' }, { field : 'secureReduce', width : 20, align : 'left', title : '五险一金'  
+	        }, { field : 'percent',  width : 23, align : 'left', title : '提成(%)' }, { field : 'ohMoneny', width : 23, align : 'left', title : '加班费(每小时/元)'  
 	        } ] ],
 	        pagination : true,  
 	        rownumbers : true

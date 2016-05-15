@@ -1,6 +1,5 @@
 package com.stx.zzq.common.utils;
 
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,6 +149,16 @@ public class CommonUtils {
 		fileName = fileName + randomCode;
 		return fileName;
 	}
+	
+	/* 
+	 * public Float getStringToFloat (String str) {
+		float f ;
+		if(str.matches()){
+			
+		}
+		
+		return; 
+	}*/
 
 	/**
 	 * 处理get访问方式的乱码问题<br/>

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.struts2.util.ComponentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -73,21 +74,27 @@ public class SalaryAction extends BaseAction {
 	/* 查询全部的工资 */
 	public String findAll() {
 		List<Salary> all = new ArrayList<Salary>();
-		createWageList();
+//		createWageList();
+
 		all = salService.findAll();
-		
+		if (CommonUtils.isEmpty(all)) {
+			System.out.println("空");
+			return "findAll";
+		}
 		writeJsonToResponse(all, response);
 		return "findAll";
 	}
 
-	// 添加工资
-	private String createWageList() {
+	/**
+	 *  添加工资 , 此处要将工资计算方法进行封装成服务接口
+	 */
+	private void createWageList() {
 		List<Salary> listSalary = new ArrayList<Salary>();
 		listSalary = salService.findAll();
 		if (CommonUtils.isEmpty(listSalary)) {
 			String result = "{\"success\":\"false\",\"Msg\":\"工资列表为空，请查看是否有员工入职！！\"}";
 			responseWrite(result);
-			return "listSalary";
+			return;
 		}
 		// 计算工资列表
 		for (Salary salary : listSalary) {
@@ -95,32 +102,35 @@ public class SalaryAction extends BaseAction {
 				String result = "{\"success\":\"false\",\"Msg\":\"员工未入职！！\"}";
 				salService.delById(salary.getSalaryId());
 				responseWrite(result);
-				return "listSalary";
+				return;
 			}
-			countWage(salary);
+			if (CommonUtils.isEmpty(salary.getRealWage())) {
+				countWage(salary);
+			}
 		}
 
-		return "listSalary";
+		return;
 	}
 
 	/* 工资计算方式, 运行速度慢, 要进行改进 */
 	private void countWage(Salary salary) {
+		String result = "";
 		// 工资计算方式
 		WageCountWay wageCountWay = new WageCountWay();
 		wageCountWay = wageWayService.findByPosId(salary.getPositionId());
 		if (CommonUtils.isEmpty(wageCountWay)) {
-			String result = "{\"success\":\"false\",\"Msg\":\"工资待定状态！！\"}";
+			result = "{\"success\":\"false\",\"Msg\":\"工资待定状态！！\"}";
 			responseWrite(result);
-			return;
+			return ;
 		}
 		salary.setBasicWage(wageCountWay.getBasicWage());
 		// 扣税
 		Deduction deduction = new Deduction();
 		deduction = deductionService.findByPosId(salary.getPositionId());
 		if (CommonUtils.isEmpty(deduction)) {
-			String result = "{\"success\":\"false\",\"Msg\":\"扣税待定状态！！\"}";
+			result = "{\"success\":\"false\",\"Msg\":\"扣税待定状态！！\"}";
 			responseWrite(result);
-			return;
+			return ;
 		}
 		// 总扣除税
 		salary.setTotalReduce(deduction.getTotalReduce());
@@ -128,18 +138,26 @@ public class SalaryAction extends BaseAction {
 		Attendance attendance = new Attendance();
 		attendance = attendanceService.findByEmpId(salary.getEmployeeId());
 		if (CommonUtils.isEmpty(attendance)) {
-			String result = "{\"success\":\"false\",\"Msg\":\"考勤为空！！\"}";
+			result = "{\"success\":\"false\",\"Msg\":\"考勤为空！！\"}";
 			responseWrite(result);
-			return;
+			return ;
 		}
 		salary.setYear(attendance.getYear());
 		salary.setMonth(attendance.getMonth());
 		Sell sell = new Sell();
 		sell = sellService.findByEmpId(salary.getEmployeeId());
 		if (CommonUtils.isEmpty(sell)) {
-			String result = "{\"success\":\"false\",\"Msg\":\"销售不存在！！\"}";
+			result = "{\"success\":\"false\",\"Msg\":\"销售不存在！！\"}";
+			// 总工资 = 基本工资 + 交通补贴 总扣除 = 五险一金 + 其他扣除（单独）
+			salary.setSellmoneyGet("0");
+			salary.setTotalWage(String
+					.valueOf(Float.parseFloat(salary.getBasicWage()) + Float.parseFloat(deduction.getTrafficWage())));
+			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage())
+					- Float.parseFloat(salary.getTotalReduce()) - Float.parseFloat(deduction.getTrafficWage())));
+			salService.add(salary);
+
 			responseWrite(result);
-			return;
+			return ;
 		}
 		String other = "";
 		// 销售提成
@@ -152,27 +170,30 @@ public class SalaryAction extends BaseAction {
 					.valueOf(Float.parseFloat(sell.getSellMoney()) * Float.parseFloat(wageCountWay.getPercent())));
 			// 其他扣除包括 （迟到、早退、旷工）
 			other = String
-					.valueOf(
-							Float.parseFloat(attendance.getChidao()) * Float.parseFloat(wageCountWay.getCdMoneny()
-									+ Float.parseFloat(attendance.getZaotui())
-											* Float.parseFloat(wageCountWay.getZtMoneny())
-									+ Float.parseFloat(attendance.getKuangGong())
-											* Float.parseFloat(wageCountWay.getKgMoneny())));
+					.valueOf(Float.parseFloat(attendance.getChidao()) * Float.parseFloat(wageCountWay.getCdMoneny())
+							+ Float.parseFloat(attendance.getZaotui()) * Float.parseFloat(wageCountWay.getZtMoneny())
+							+ Float.parseFloat(attendance.getKuangGong())
+									* Float.parseFloat(wageCountWay.getKgMoneny()));
 			// 总工资 = 加班 + 基本工资 + 销售提成 + 交通补贴 扣税中的总扣除 = 五险一金 + 其他扣除（单独）- 交通补贴
 			salary.setTotalWage(String.valueOf(Float.parseFloat(salary.getBasicWage())
 					+ Float.parseFloat(salary.getOvertimeWage()) + Float.parseFloat(deduction.getTrafficWage())));
 			// 实际工资 = 总工资 - 总扣除 - 交通补贴（多加了）
-			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage()) - (Float.parseFloat(other))
+			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage()) + (-(Float.parseFloat(other)))
 					+ Float.parseFloat(deduction.getTotalReduce())));
+			result = "{\"success\":\"true\",\"Msg\":\"\"}";
 		} else {
 			// 总工资 = 基本工资 + 交通补贴 总扣除 = 五险一金 + 其他扣除（单独）
 			salary.setSellmoneyGet("0");
-			salary.setTotalReduce(String
+			salary.setTotalWage(String
 					.valueOf(Float.parseFloat(salary.getBasicWage()) + Float.parseFloat(deduction.getTrafficWage())));
 			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage())
 					- Float.parseFloat(salary.getTotalReduce()) - Float.parseFloat(deduction.getTrafficWage())));
+			result = "{\"success\":\"true\",\"Msg\":\"\"}";
 		}
 		salService.add(salary);
+		
+		responseWrite(result);
+		return ;
 	}
 
 	/**

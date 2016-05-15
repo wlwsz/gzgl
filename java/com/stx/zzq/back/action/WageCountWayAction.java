@@ -9,14 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.stx.zzq.back.service.AttendanceService;
 import com.stx.zzq.back.service.DeductionService;
 import com.stx.zzq.back.service.PositionService;
+import com.stx.zzq.back.service.SalaryService;
+import com.stx.zzq.back.service.SellService;
 import com.stx.zzq.back.service.WageCountWayService;
 import com.stx.zzq.base.BaseAction;
 import com.stx.zzq.common.utils.CommonUtils;
 import com.stx.zzq.common.utils.ConstantsCode;
+import com.stx.zzq.entities.Attendance;
 import com.stx.zzq.entities.Deduction;
 import com.stx.zzq.entities.Position;
+import com.stx.zzq.entities.Salary;
+import com.stx.zzq.entities.Sell;
 import com.stx.zzq.entities.WageCountWay;
 
 @Scope("prototype")
@@ -29,13 +35,21 @@ public class WageCountWayAction extends BaseAction {
 	private PositionService positionService;
 	@Autowired
 	private DeductionService deductionService;
+	@Autowired
+	private SalaryService salService;
+	// 考勤
+	@Autowired
+	private AttendanceService attendanceService;
+	// 销售信息
+	@Autowired
+	private SellService sellService;
 
 	// 添加
 	public String add() {
-		String result="";
+		String result = "";
 		String positionId = request.getParameter("positionId");
 		Position position = positionService.findById(positionId);
-		if(CommonUtils.isEmpty(position)) {
+		if (CommonUtils.isEmpty(position)) {
 			result = "{\"success\":\"false\",\"Msg\":\"请选择职位\"}";
 			responseWrite(result);
 			return "add";
@@ -56,19 +70,133 @@ public class WageCountWayAction extends BaseAction {
 		position.setBasicWage(wageCountWay.getBasicWage());
 		position.setSecureReduce(wageCountWay.getSecureReduce());
 		positionService.updById(position);
+
 		// 修改扣税中的五险一金
 		updateDeduction(position);
 		
+		createWageList();
+
 		return "add";
 	}
-	/*去修改扣税表中的数据*/
-	private void updateDeduction(Position position) {
-		List<Deduction> allDeduc = new ArrayList<Deduction>();
-		if(CommonUtils.isEmpty(allDeduc)) {
+
+	/**
+	 *  计算工资
+	 */
+	private void createWageList() {
+		List<Salary> listSalary = new ArrayList<Salary>();
+		listSalary = salService.findAll();
+		if (CommonUtils.isEmpty(listSalary)) {
+			String result = "{\"success\":\"false\",\"Msg\":\"工资列表为空，请查看是否有员工入职！！\"}";
+			responseWrite(result);
+			return;
+		}
+		// 计算工资列表
+		for (Salary salary : listSalary) {
+			if (CommonUtils.isEmpty(salary.getPositionId())) {
+				String result = "{\"success\":\"false\",\"Msg\":\"员工未入职！！\"}";
+				salService.delById(salary.getSalaryId());
+				responseWrite(result);
+				return;
+			}
+			if (CommonUtils.isEmpty(salary.getRealWage())) {
+				countWage(salary);
+			}
+		}
+
+		return;
+	}
+	/* 工资计算方式, 运行速度慢, 要进行改进 */
+	private void countWage(Salary salary) {
+		String result = "";
+		// 工资计算方式
+		WageCountWay wageCountWay = new WageCountWay();
+		wageCountWay = wageCountWayService.findByPosId(salary.getPositionId());
+		if (CommonUtils.isEmpty(wageCountWay)) {
+			result = "{\"success\":\"false\",\"Msg\":\"工资待定状态！！\"}";
+			responseWrite(result);
 			return ;
 		}
+		salary.setBasicWage(wageCountWay.getBasicWage());
+		// 扣税
+		Deduction deduction = new Deduction();
+		deduction = deductionService.findByPosId(salary.getPositionId());
+		if (CommonUtils.isEmpty(deduction)) {
+			result = "{\"success\":\"false\",\"Msg\":\"扣税待定状态！！\"}";
+			responseWrite(result);
+			return ;
+		}
+		// 总扣除税
+		salary.setTotalReduce(deduction.getTotalReduce());
+		// 考勤
+		Attendance attendance = new Attendance();
+		attendance = attendanceService.findByEmpId(salary.getEmployeeId());
+		if (CommonUtils.isEmpty(attendance)) {
+			result = "{\"success\":\"false\",\"Msg\":\"考勤为空！！\"}";
+			responseWrite(result);
+			return ;
+		}
+		salary.setYear(attendance.getYear());
+		salary.setMonth(attendance.getMonth());
+		Sell sell = new Sell();
+		sell = sellService.findByEmpId(salary.getEmployeeId());
+		if (CommonUtils.isEmpty(sell)) {
+			result = "{\"success\":\"false\",\"Msg\":\"销售不存在！！\"}";
+			// 总工资 = 基本工资 + 交通补贴 总扣除 = 五险一金 + 其他扣除（单独）
+			salary.setSellmoneyGet("0");
+			salary.setTotalWage(String
+					.valueOf(Float.parseFloat(salary.getBasicWage()) + Float.parseFloat(deduction.getTrafficWage())));
+			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage())
+					- Float.parseFloat(salary.getTotalReduce()) - Float.parseFloat(deduction.getTrafficWage())));
+			salService.add(salary);
+
+			responseWrite(result);
+			return ;
+		}
+		String other = "";
+		// 销售提成
+		if (attendance.getYear().equals(sell.getSellYear()) && attendance.getMonth().equals(sell.getSellMonth())) {
+			// 加班工资
+			salary.setOvertimeWage(String.valueOf(
+					Float.parseFloat(attendance.getOverHour()) * Float.parseFloat(wageCountWay.getOhMoneny())));
+			// 销售提成
+			salary.setSellmoneyGet(String
+					.valueOf(Float.parseFloat(sell.getSellMoney()) * Float.parseFloat(wageCountWay.getPercent())));
+			// 其他扣除包括 （迟到、早退、旷工）
+			other = String
+					.valueOf(Float.parseFloat(attendance.getChidao()) * Float.parseFloat(wageCountWay.getCdMoneny())
+							+ Float.parseFloat(attendance.getZaotui()) * Float.parseFloat(wageCountWay.getZtMoneny())
+							+ Float.parseFloat(attendance.getKuangGong())
+									* Float.parseFloat(wageCountWay.getKgMoneny()));
+			// 总工资 = 加班 + 基本工资 + 销售提成 + 交通补贴 扣税中的总扣除 = 五险一金 + 其他扣除（单独）- 交通补贴
+			salary.setTotalWage(String.valueOf(Float.parseFloat(salary.getBasicWage())
+					+ Float.parseFloat(salary.getOvertimeWage()) + Float.parseFloat(deduction.getTrafficWage())));
+			// 实际工资 = 总工资 - 总扣除 - 交通补贴（多加了）
+			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage()) + (-(Float.parseFloat(other)))
+					+ Float.parseFloat(deduction.getTotalReduce())));
+			result = "{\"success\":\"true\",\"Msg\":\"\"}";
+		} else {
+			// 总工资 = 基本工资 + 交通补贴 总扣除 = 五险一金 + 其他扣除（单独）
+			salary.setSellmoneyGet("0");
+			salary.setTotalWage(String
+					.valueOf(Float.parseFloat(salary.getBasicWage()) + Float.parseFloat(deduction.getTrafficWage())));
+			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage())
+					- Float.parseFloat(salary.getTotalReduce()) - Float.parseFloat(deduction.getTrafficWage())));
+			result = "{\"success\":\"true\",\"Msg\":\"\"}";
+		}
+		salService.add(salary);
+		
+		responseWrite(result);
+		return ;
+	}
+
+	/* 去修改扣税表中的数据 */
+	private void updateDeduction(Position position) {
+		List<Deduction> allDeduc = new ArrayList<Deduction>();
+		if (CommonUtils.isEmpty(allDeduc)) {
+			return;
+		}
 		// 不为空则进行修改
-		for(Deduction deduction : allDeduc) {
+		for (Deduction deduction : allDeduc) {
 			deduction.setSecureReduce(position.getSecureReduce());
 			deduction.setTotalReduce("0");
 			deductionService.updById(deduction);
@@ -88,25 +216,25 @@ public class WageCountWayAction extends BaseAction {
 		String id = request.getParameter("id");
 		WageCountWay wageCountWay = new WageCountWay();
 		wageCountWay = wageCountWayService.findById(id);
-		
+
 		writeJsonToResponse(wageCountWay, response);
 		return "findById";
 	}
-	
+
 	// 搜索
 	public String searchByKey() {
 		String search_name = request.getParameter("positionName");
-		if(search_name.getBytes().length != search_name.length()) {
+		if (search_name.getBytes().length != search_name.length()) {
 			try {
 				search_name = new String(search_name.getBytes("iso-8859-1"), ConstantsCode.ENCODE);
-			}catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		// 返回的结果
 		List<WageCountWay> allWageCountWay = new ArrayList<WageCountWay>();
 		// 空则查询全部
-		if(CommonUtils.isEmpty(search_name)) {
+		if (CommonUtils.isEmpty(search_name)) {
 			allWageCountWay = wageCountWayService.findAll();
 		} else {
 			allWageCountWay = wageCountWayService.searchByName(search_name);
@@ -128,14 +256,14 @@ public class WageCountWayAction extends BaseAction {
 		wageCountWay.setZtMoneny(request.getParameter("ztMoneny"));
 		wageCountWay.setKgMoneny(request.getParameter("kgMoneny"));
 		wageCountWayService.updById(wageCountWay);
-		
+
 		// TODO 判断是否修改成功在进行修改下面操作
 		Position position = new Position();
 		position = positionService.findById(wageCountWay.getPositionId());
 		position.setBasicWage(wageCountWay.getBasicWage());
 		position.setSecureReduce(wageCountWay.getSecureReduce());
 		positionService.updById(position);
-		
+
 		return "updById";
 	}
 
