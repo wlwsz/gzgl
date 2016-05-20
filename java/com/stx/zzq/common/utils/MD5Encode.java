@@ -15,26 +15,25 @@ public class MD5Encode {
 	 * @return 返回32位md5码
 	 */
 	public static String md5Encode(String inStr) throws Exception {
-		MessageDigest md5 = null;
+		MessageDigest md5 = null;  // 消息编码
 		try {
-			md5 = MessageDigest.getInstance("MD5");
+			md5 = MessageDigest.getInstance("MD5"); // 获取MD5的编码
 		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
-			return "";
+			e.printStackTrace();  // 异常打印
+			return ""; // 结束方法
 		}
 
-		byte[] byteArray = inStr.getBytes("UTF-8");
-		byte[] md5Bytes = md5.digest(byteArray);
-		StringBuffer hexValue = new StringBuffer();
+		byte[] byteArray = inStr.getBytes("UTF-8");	//源字符串编程字节数组
+		byte[] md5Bytes = md5.digest(byteArray); // 使用MD5进行编码
+		StringBuffer hexValue = new StringBuffer(); // 存放编码结果
 		for (int i = 0; i < md5Bytes.length; i++) {
-			int val = ((int) md5Bytes[i]) & 0xff;
+			int val = ((int) md5Bytes[i]) & 0xff; // 逻辑与运算（进行32位处理）
 			if (val < 16) {
-				hexValue.append("0");
+				hexValue.append("0");  // 编码拼接
 			}
-			hexValue.append(Integer.toHexString(val));
+			hexValue.append(Integer.toHexString(val)); 
 		}
-		return hexValue.toString();
+		return hexValue.toString(); // 返回编码结果
 	}
 
 	/**

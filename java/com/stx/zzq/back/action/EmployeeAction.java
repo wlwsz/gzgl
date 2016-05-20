@@ -56,7 +56,7 @@ public class EmployeeAction extends BaseAction {
 		addEmp.setIconPath("/bootstrap/images/01.jpg");
 		empService.add(addEmp);
 		// 给员工实例化工资表
-		createSalary(addEmp);
+		createSalary(addEmp, posit);
 		
 		addEmp.put("success", "添加成功");
 		writeJsonToResponse(addEmp, response);
@@ -64,12 +64,13 @@ public class EmployeeAction extends BaseAction {
 	}
 
 	/* 工资计算表 */
-	private void createSalary(Employee employee) {
+	private void createSalary(Employee employee, Position position) {
 		Salary salary = new Salary();
 		salary.setEmployeeId(employee.getEmployeeId());
 		salary.setEmployeeName(employee.getName());
 		salary.setPositionId(employee.getPositionId());
 		salary.setPositionName(employee.getPositionName());
+		salary.setBasicWage(position.getBasicWage());
 		
 		salaryService.add(salary);
 	}
@@ -92,9 +93,9 @@ public class EmployeeAction extends BaseAction {
 
 	/* 搜索 */
 	public String searchByKey() {
-		List<Employee> listEmployee = new ArrayList<Employee>();
-		String s_id = request.getParameter("employeeId");
-		String s_name = request.getParameter("name");
+		List<Employee> listEmployee = new ArrayList<Employee>(); // 存放结果变量
+		String s_id = request.getParameter("employeeId"); // 获取搜索的编号
+		String s_name = request.getParameter("name"); // 获取搜索的姓名
 		// 处理中文乱码
 		if (!CommonUtils.isEmpty(s_id) && s_id.getBytes().length != s_id.length()) {
 			try {
@@ -110,17 +111,20 @@ public class EmployeeAction extends BaseAction {
 				e.printStackTrace();
 			}
 		}
+		// 判断搜索条件是否都为空，都为空则返回全部数据
 		if (CommonUtils.isEmpty(s_id) && CommonUtils.isEmpty(s_name)) {
 			listEmployee = empService.findAll();
 		} else if (CommonUtils.isEmpty(s_id) && !CommonUtils.isEmpty(s_name)) {
+			// CODE1值是1，代表查询的是name字段，目的是为了方便SQL语句的重用
 			listEmployee = empService.searchByKey(s_name, ConstantsCode.CODE1);
 		} else if (!CommonUtils.isEmpty(s_id) && CommonUtils.isEmpty(s_name)) {
+			// CODE0值是0，代表查询的是id字段，目的是为了方便SQL语句的重用
 			listEmployee = empService.searchByKey(s_id, ConstantsCode.CODE0);
 		} else {
-			System.out.println(s_id + "====" + s_name);
+			// 此处是进行两个字段进行匹配
 			listEmployee = empService.searchByKey(s_id, s_name);
 		}
-
+		// 返回信息给请求端
 		writeJsonToResponse(listEmployee, response);
 		return SUCCESS;
 	}

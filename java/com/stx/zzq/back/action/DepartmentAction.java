@@ -38,10 +38,10 @@ public class DepartmentAction extends BaseAction {
 
 	/* 查询所有部门 */
 	public String findAll() {
-		List<Department> all = new ArrayList<Department>();
-		all = departService.findAll();
-		request.setAttribute("all", all);
-		writeJsonToResponse(all, response);
+		List<Department> all = new ArrayList<Department>(); // 定义存放结果的list集合
+		all = departService.findAll(); // 通过部门服务查询全部数据信息
+		request.setAttribute("all", all); // 将结果放入到request对象中
+		writeJsonToResponse(all, response); // 通过将结果转化为json数据返回到页面
 		return "findAll";
 	}
 

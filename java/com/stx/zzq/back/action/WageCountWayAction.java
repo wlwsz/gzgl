@@ -47,13 +47,18 @@ public class WageCountWayAction extends BaseAction {
 	// 添加
 	public String add() {
 		String result = "";
+		// 获取工资计算id
 		String positionId = request.getParameter("positionId");
+		// 查询特定的职位
 		Position position = positionService.findById(positionId);
+		// 判断职位是否存在
 		if (CommonUtils.isEmpty(position)) {
+			// 不存在则给出提示信息
 			result = "{\"success\":\"false\",\"Msg\":\"请选择职位\"}";
 			responseWrite(result);
 			return "add";
 		}
+		// 存在则设置计算方式的具体内容
 		WageCountWay wageCountWay = new WageCountWay();
 		wageCountWay.setPositionId(position.getPositionId());
 		wageCountWay.setPositionName(position.getPositionName());
@@ -64,9 +69,10 @@ public class WageCountWayAction extends BaseAction {
 		wageCountWay.setZtMoneny(request.getParameter("ztMoneny"));
 		wageCountWay.setKgMoneny(request.getParameter("kgMoneny"));
 		wageCountWay.setPercent(request.getParameter("percent"));
-
+		// 添加工资计算方式到数据库
 		wageCountWayService.add(wageCountWay);
 		// TODO 判断是否修改成功在进行修改下面操作
+		/* 更新职位的基本工资 */
 		position.setBasicWage(wageCountWay.getBasicWage());
 		position.setSecureReduce(wageCountWay.getSecureReduce());
 		positionService.updById(position);
@@ -83,9 +89,13 @@ public class WageCountWayAction extends BaseAction {
 	 *  计算工资
 	 */
 	private void createWageList() {
+		// 存放结果集合
 		List<Salary> listSalary = new ArrayList<Salary>();
+		// 通过员工工资服务查询所有的工资
 		listSalary = salService.findAll();
+		// 判断员工工资结果集是否为空
 		if (CommonUtils.isEmpty(listSalary)) {
+			// 为空则给出相应的提示
 			String result = "{\"success\":\"false\",\"Msg\":\"工资列表为空，请查看是否有员工入职！！\"}";
 			responseWrite(result);
 			return;
@@ -110,17 +120,22 @@ public class WageCountWayAction extends BaseAction {
 		String result = "";
 		// 工资计算方式
 		WageCountWay wageCountWay = new WageCountWay();
+		// 查询相应的计算方式
 		wageCountWay = wageCountWayService.findByPosId(salary.getPositionId());
 		if (CommonUtils.isEmpty(wageCountWay)) {
+			// 不存在则给出提示
 			result = "{\"success\":\"false\",\"Msg\":\"工资待定状态！！\"}";
 			responseWrite(result);
 			return ;
 		}
+		// 存在则先设置基本工资
 		salary.setBasicWage(wageCountWay.getBasicWage());
 		// 扣税
 		Deduction deduction = new Deduction();
+		// 查询职位扣税
 		deduction = deductionService.findByPosId(salary.getPositionId());
 		if (CommonUtils.isEmpty(deduction)) {
+			// 不存在则给出提示
 			result = "{\"success\":\"false\",\"Msg\":\"扣税待定状态！！\"}";
 			responseWrite(result);
 			return ;
@@ -138,6 +153,7 @@ public class WageCountWayAction extends BaseAction {
 		salary.setYear(attendance.getYear());
 		salary.setMonth(attendance.getMonth());
 		Sell sell = new Sell();
+		// 销售
 		sell = sellService.findByEmpId(salary.getEmployeeId());
 		if (CommonUtils.isEmpty(sell)) {
 			result = "{\"success\":\"false\",\"Msg\":\"销售不存在！！\"}";
@@ -147,7 +163,7 @@ public class WageCountWayAction extends BaseAction {
 					.valueOf(Float.parseFloat(salary.getBasicWage()) + Float.parseFloat(deduction.getTrafficWage())));
 			salary.setRealWage(String.valueOf(Float.parseFloat(salary.getTotalWage())
 					- Float.parseFloat(salary.getTotalReduce()) - Float.parseFloat(deduction.getTrafficWage())));
-			salService.add(salary);
+			salService.updById(salary);
 
 			responseWrite(result);
 			return ;
@@ -183,7 +199,7 @@ public class WageCountWayAction extends BaseAction {
 					- Float.parseFloat(salary.getTotalReduce()) - Float.parseFloat(deduction.getTrafficWage())));
 			result = "{\"success\":\"true\",\"Msg\":\"\"}";
 		}
-		salService.add(salary);
+		salService.updById(salary);
 		
 		responseWrite(result);
 		return ;

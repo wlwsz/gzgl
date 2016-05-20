@@ -30,23 +30,24 @@ public class PositionAction extends BaseAction {
 
 	/* 新添加职位 */
 	public String add() {
-		Position position = new Position();
-		String id = request.getParameter("positionId");
-		position = positionService.findById(id);
-		if(!CommonUtils.isEmpty(position)) {
+		Position position = new Position();	// 定义职位变量
+		String id = request.getParameter("positionId"); // 获取职位的id
+		position = positionService.findById(id); // 通过职位服务层代码查询特定的职位
+		if(!CommonUtils.isEmpty(position)) {	// 判断查询的特定职位是否存在
 			position.put("fail", "职位存在");
-			writeJsonToResponse(position, response);
+			writeJsonToResponse(position, response); // 存在，则给出提示，返回信息
 			return "add";
 		}
-		Department dep = new Department();
-		Position addPosition = new Position();
-		dep = departService.findById(request.getParameter("departmentId"));
-		if(CommonUtils.isEmpty(dep)) {
+		Department dep = new Department(); // 部门变量
+		Position addPosition = new Position(); // 不存在，则定义职位变量
+		dep = departService.findById(request.getParameter("departmentId")); // 找到特定的部门
+		if(CommonUtils.isEmpty(dep)) { 	// 判断部门是否存在
 			addPosition.put("fail", "请选择部门");
-			writeJsonToResponse(addPosition, response);
+			writeJsonToResponse(addPosition, response); // 不存在个给出提示“请选择部门”
 			return "add";
 		}
-		addPosition.setPositionId(request.getParameter("positionId"));
+		/*以下是通过setter方法给职位信息填充*/
+		addPosition.setPositionId(request.getParameter("positionId")); 
 		addPosition.setDepartmentId(dep.getDepartmentId());
 		addPosition.setDepartmentName(dep.getDepartmentName());
 		addPosition.setPositionName(request.getParameter("positionName"));
@@ -56,7 +57,7 @@ public class PositionAction extends BaseAction {
 		System.out.println(addPosition);
 		positionService.add(addPosition);
 		addPosition.put("success", "保存成功");
-		writeJsonToResponse(addPosition, response);
+		writeJsonToResponse(addPosition, response); // 返回成功添加信息
 		return "add";
 	}
 

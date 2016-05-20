@@ -33,15 +33,20 @@ public class AdminAction extends BaseAction {
 	/* private HttpServletRequest request = getRequest(); */
 
 	public String login() {
+		// 实例化变量
 		Admin loginAdmin = new Admin();
+		// 获取参数值
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		// 判断是否为空
 		if (CommonUtils.isEmpty(username)) {
 			request.setAttribute("error", "用户名不能为空");
 			return "login";
 		}
+		// 查询用户是否存在
 		loginAdmin = adminService.findByName(username);
 		if (CommonUtils.isEmpty(loginAdmin)) {
+			// 提示信息
 			request.setAttribute("error", "用户不存在，请先注册");
 			return "login";
 		}
@@ -54,26 +59,34 @@ public class AdminAction extends BaseAction {
 			request.setAttribute("error", "密码输入有误");
 			return "login";
 		}
+		// 登录成功进行session的设置
 		request.getSession().setAttribute("user_session", loginAdmin);
 		return "loginSuccess";
 	}
 
 	public String register() {
+		// 实例化变量
 		Admin admin = new Admin();
 		HttpSession session = request.getSession();
+		// 获取session中的验证码
 		String verifycode = (String) session.getAttribute(RandomValidateCode.RANDOMCODEKEY);
+		// 获取用户名和密码参数
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		// 判断用户名、验证码
+		// 判断用户名、验证码是否为空
 		if (CommonUtils.isEmpty(username)) {
+			// 为空则给出提示
 			request.setAttribute("error", "用户名不能为空");
 			return "register";
 		}
+		// 验证用户名是否存在
 		admin = adminService.findByName(username);
 		if (!CommonUtils.isEmpty(admin)) {
+			// 存在则给出提示
 			request.setAttribute("error", "用户存在，请重新输入用户名");
 			return "register";
 		}
+		// 验证码是否为空
 		if (!CommonUtils.isEmpty(verifycode)) {
 			// 忽略大小写
 			if (!verifycode.equalsIgnoreCase(request.getParameter("verifycode"))) {
@@ -81,7 +94,7 @@ public class AdminAction extends BaseAction {
 				writeJsonToResponse(admin, response);
 				return "register";
 			}
-
+			// 进行系统用户的注册
 			admin = new Admin();
 			admin.setUsername(request.getParameter("username"));
 			admin.setPassword(request.getParameter("password"));
@@ -152,10 +165,11 @@ public class AdminAction extends BaseAction {
 	}
 	/* 搜索功能，进行模糊查询 */
 	public String searchByName() {
-		String search_name = request.getParameter("username");
-		if(search_name.getBytes().length != search_name.length()) {
-			try {
-				search_name = new String(search_name.getBytes("iso-8859-1"), ConstantsCode.ENCODE);
+		String search_name = request.getParameter("username"); // 获取前台传递的“username”参数的值
+		if(search_name.getBytes().length != search_name.length()) { // 对“username”的值进行判断是否是中文
+			try {	
+				/* 如果是中文则进行中文编码处理，不是则直接跳过 */
+				search_name = new String(search_name.getBytes("iso-8859-1"), ConstantsCode.ENCODE); 
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -166,6 +180,7 @@ public class AdminAction extends BaseAction {
 		if(CommonUtils.isEmpty(search_name)) {
 			allAdmin = adminService.findAll();
 		} else {
+			// 不为空则按照需求（用户名）查询
 			allAdmin = adminService.searchByName(search_name);
 		}
 		writeJsonToResponse(allAdmin, response);

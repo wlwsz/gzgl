@@ -93,15 +93,18 @@ public class DeductionAction extends BaseAction {
 
 	// 修改
 	public String updById() {
-		Deduction updById = null;
-		updById = deductionService.findById(Integer.parseInt(request.getParameter("deductionId")));
+		Deduction updById = null; // 申明变量
+		// 通过id查询扣税变量
+		updById = deductionService.findById(Integer.parseInt(request.getParameter("deductionId"))); 
+		// 判断要更新的对象是否为空
 		if(CommonUtils.isEmpty(updById)) {
 			updById = new Deduction();
+			// 为空则给出提示
 			updById.put("fail", "没有相应的记录");
 			writeJsonToResponse(updById, response);
 			return "updById";
 		}
-//		updById.setDeductionId(Integer.parseInt(request.getParameter("deductionId")));
+		// 存在则进行重新设置值，进行修改
 		updById.setTaxReduce(request.getParameter("taxReduce"));
 		updById.setTrafficWage(request.getParameter("trafficWage"));
 		updById.setTotalReduce("0");

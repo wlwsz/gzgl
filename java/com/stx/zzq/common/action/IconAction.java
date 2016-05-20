@@ -49,18 +49,22 @@ public class IconAction extends BaseAction {
 	public String saveIcon() {
 
 		HttpServletRequest request = getRequest();
+		// 获取用户信息
 		Admin iconAdmin = (Admin) request.getSession().getAttribute("user_session");
-		
+		// 图片结果集
 		List<File> fileList = new ArrayList<File>();
 		fileList.add(avatar1);
 		fileList.add(avatar2);
 		fileList.add(avatar3);
-
+		
+		// 结果对象
 		Result result = new Result();
 		result.setSuccess(false);
 		result.setMsg("Failure!");
-
+		
+		// 获取请求内容类型
 		String contentType = request.getContentType();
+		// 是否是图片上传
 		if (contentType.indexOf("multipart/form-data") >= 0) {
 			// 保存150*150 80*80 50*50的图片的路径
 			List<String> fileNameList = new ArrayList<String>();
@@ -86,19 +90,22 @@ public class IconAction extends BaseAction {
 							+ ".jpg";
 					// 此处执行保存操作
 					File temp = new File(virtualPath1 + virtualPath.replace("/", "\\"));
-
+					
+					// 获取文件输入流
 					inputStream = new BufferedInputStream(new FileInputStream(file));
 					byte[] bytes = new byte[inputStream.available()];
 					outputStream = new BufferedOutputStream(
 							new FileOutputStream(temp));
+					// 使用流的复制功能，进行图片上传
 					Streams.copy(inputStream, outputStream, true);
 					avatarNumber++;
-
+					// 流的关闭操作
 					if (inputStream != null) {
 						inputStream.close();
 					}
 					if (outputStream != null) {
 						outputStream.flush();
+						// 头像路径进行数据库保存
 						fileNameList.add(virtualPath);
 						outputStream.close();
 					}
@@ -109,7 +116,7 @@ public class IconAction extends BaseAction {
 				
 				// 存储头像地址到数据库
 				iconAdmin.setIconPath(fileNameList.get(0));
-				
+				// 更新头像或是头像上传
 				adminService.updIcon(iconAdmin);
 				
 				ServletActionContext.getResponse().getWriter()
