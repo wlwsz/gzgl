@@ -133,4 +133,11 @@
 		<!-- excel导出管理 -->
 		<action name="exportExcel" class="common.ExportExcelAction" method="exportExcel"></action>
 	</package>
+	
+	<!-- 普通用户-员工操作 -->
+	<package name="front" namespace="/" extends="struts-default">
+		<action name="front_*" class="front.EmployeeAction" method="{1}">
+			<result name="success">/front/employee_person.jsp</result>
+		</action>
+	</package>
 </struts>

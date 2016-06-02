@@ -62,6 +62,9 @@ public class WageCountWayAction extends BaseAction {
 		WageCountWay wageCountWay = new WageCountWay();
 		wageCountWay.setPositionId(position.getPositionId());
 		wageCountWay.setPositionName(position.getPositionName());
+		// TODO 将要做的是如果上面设置或重新调整了基本工资，则需要改变职位的基本工资
+		// 以及员工工资记录中的基本工资，但是首先得先判断是否有实际工资，如果有则不需要改变，没有则改变
+		//（有表示记录已经工资已经发放完成，没有则是未发的）
 		wageCountWay.setBasicWage(request.getParameter("basicWage"));
 		wageCountWay.setSecureReduce(request.getParameter("secureReduce"));
 		wageCountWay.setOhMoneny(request.getParameter("ohMoneny"));
@@ -80,7 +83,7 @@ public class WageCountWayAction extends BaseAction {
 		// 修改扣税中的五险一金
 		updateDeduction(position);
 		
-		createWageList();
+		/*createWageList();*/
 
 		return "add";
 	}

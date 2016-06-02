@@ -15,13 +15,54 @@
   <link rel="stylesheet" type="text/css" href="<%=path %>/easyui/demo/demo.css">
   <script type="text/javascript" src="<%=path %>/easyui/jquery.min.js"></script>
   <script type="text/javascript" src="<%=path %>/easyui/jquery.easyui.min.js"></script>
+  <script type="text/javascript">
+	//导出Excel数据
+	function exportExcel(){
+			var selectedRows = $("#dg").datagrid('getSelections');
+			var json;
+		    var param = ["salaryId", "employeeId", "employeeName", "basicWage", "overtimeWage", "sellmoneyGet", "totalWage", "totalReduce", "realWage", "month", "editTime", "memo"];
+			if(selectedRows.length==0){
+				$.messager.alert("系统提示","请选择要删除的数据！");
+				return;
+			}
+			json = "["
+			for(var i = 0; i < selectedRows.length; i++){
+				json += "{\""+ param[0] + "\":\"" + selectedRows[i].salaryId + "\",\"" 
+				+ param[1] +"\":\"" + selectedRows[i].employeeId + "\",\""
+				+ param[2] +"\":\"" + selectedRows[i].employeeName + "\",\""
+				+ param[3] +"\":\"" + selectedRows[i].basicWage + "\",\""
+				+ param[4] +"\":\"" + selectedRows[i].overtimeWage + "\",\""
+				+ param[5] +"\":\"" + selectedRows[i].sellmoneyGet + "\",\""
+				+ param[6] +"\":\"" + selectedRows[i].totalWage + "\",\""
+				+ param[7] +"\":\"" + selectedRows[i].totalReduce + "\",\""
+				+ param[8] +"\":\"" + selectedRows[i].realWage + "\",\""
+				+ param[9] +"\":\"" + selectedRows[i].month + "\",\""
+				+ param[10] +"\":\"" + selectedRows[i].editTime + "\",\""
+				+ param[11] +"\":\"" + selectedRows[i].memo + "\"},";
+			}
+			json = json.substring(0, json.lastIndexOf(","));
+			json += "]";
+			$.messager.confirm("系统提示","您确认要导出这<font color=red>"+selectedRows.length+"</font>条数据吗？",function(r){
+				if(r){
+					$.post("<%=request.getContextPath()%>/back/exportExcel.action", {json:json, code:4}, function(result){
+						if(result.success){
+							$.messager.alert("系统提示","<font color='green'>"+ result.msg+"</font>");
+							$("#dg").datagrid("reload");
+						}else{
+							$.messager.alert("系统提示",'<font color=red>'+result.errorMsg+'</font>');
+						}
+					},"json");
+				}
+			});
+		}
+  </script>
 </head>
 <body>
         
         <table id="dg" title="工资列表" class="easyui-datagrid" style="width:auto;height:465px;"
         url="<%=path %>/back/sal_findAll.action"
         toolbar="#toolbar" pagination="true"
-        rownumbers="true" fitColumns="true" singleSelect="true">
+        rownumbers="true" fitColumns="true">
         <thead>
             <tr>
             	<th field="cb" checkbox="true" ></th>
@@ -44,6 +85,7 @@
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">添加</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">修改</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
+        <!-- <a href="javascript:exportExcel()" class="easyui-linkbutton" data-options="iconCls:'icon-excel'" plain="true">导出</a> -->
     </div>
 
     <div id="dlg" class="easyui-dialog" style="width:500px;height:350px;padding:10px 20px"

@@ -48,5 +48,8 @@
 			id="txPointcut" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
 	</aop:config>
+	
+	<!-- 添加定时任务 -->
+	<import resource="spring-time.xml"/>
 
 </beans>

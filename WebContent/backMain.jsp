@@ -37,8 +37,9 @@
                                 },{"menuid":"3","icon":"icon-sys","menuname":"导出管理",
                                     "menus":[{"menuid":"32","menuname":"职位列表","icon":"icon-users","url":"<%=path%>/excel/position_manager.jsp"},
                                              {"menuid":"33","menuname":"员工列表","icon":"icon-users","url":"<%=path%>/excel/employee_manager.jsp"},
-                                             {"menuid":"34","menuname":"考勤列表","icon":"icon-users","url":"<%=path%>/excel/attendance_manager.jsp"},
-                                             {"menuid":"35","menuname":"销售列表","icon":"icon-users","url":"<%=path%>/excel/sell_manager.jsp"},
+                                             {"menuid":"34","menuname":"工资列表","icon":"icon-users","url":"<%=path%>/excel/salary_manager.jsp"},
+                                             {"menuid":"35","menuname":"考勤列表","icon":"icon-users","url":"<%=path%>/excel/attendance_manager.jsp"},
+                                             {"menuid":"36","menuname":"销售列表","icon":"icon-users","url":"<%=path%>/excel/sell_manager.jsp"},
                                         ]
                                 },{"menuid":"4","icon":"icon-sys","menuname":"个人管理",
                                     "menus":[{"menuid":"41","menuname":"个人信息","icon":"icon-users","url":"<%=path %>/personnalPage.jsp"},
