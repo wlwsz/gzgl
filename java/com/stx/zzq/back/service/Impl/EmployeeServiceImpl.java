@@ -71,4 +71,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return listEmployee;
 	}
 
+	// 通过名字查询对象
+	@Override
+	public Employee findByName(String username) {
+		// TODO Auto-generated method stub
+		Employee emp = new Employee();
+		emp = empDao.findByName(username);
+		
+		return emp;
+	}
+
 }

@@ -111,5 +111,12 @@ public class SalaryServiceImpl implements SalaryService {
 		i = salDao.delById(id);
 		return i;
 	}
+	
+	@Override
+	public List<Salary> findByEmpId(String empId) {
+		List<Salary> salaryAll = new ArrayList<Salary>();
+		salaryAll = salDao.findByEmpId(empId);
+		return salaryAll;
+	}
 
 }

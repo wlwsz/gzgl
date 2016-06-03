@@ -12,6 +12,9 @@ public interface SalaryService {
 
 	/* 查询全部的工资 */
 	List<Salary> findAll();
+	
+	/* 查询某个人工资 */
+	List<Salary> findByEmpId(String empId);
 
 	/* 查询某个人工资 */
 	Salary findByEmpId(Employee emp);

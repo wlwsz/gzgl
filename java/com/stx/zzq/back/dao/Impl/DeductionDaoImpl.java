@@ -55,7 +55,7 @@ public class DeductionDaoImpl extends BaseDao implements DeductionDao {
 	public Deduction findByPosId(String posId) {
 		// TODO Auto-generated method stub
 		Deduction dedu = new Deduction();
-		String hql = "From Deduction where positionId = ?";
+		String hql = "From Deduction deduc where deduc.positionId = ?";
 		Query query = getSession().createQuery(hql);
 		query.setString(0, posId);
 		dedu = (Deduction) query.uniqueResult();

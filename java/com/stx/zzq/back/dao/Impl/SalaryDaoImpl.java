@@ -76,4 +76,17 @@ public class SalaryDaoImpl extends BaseDao implements SalaryDao {
 		return i;
 	}
 
+	@Override
+	public List<Salary> findByEmpId(String empId) {
+		// TODO
+		String hql = "From Salary where employeeId = ?";
+		Query query = getSession().createQuery(hql);
+		query.setString(0, empId);
+
+		List<Salary> salaryAll = new ArrayList<Salary>();
+		salaryAll = query.list();
+
+		return salaryAll;
+	}
+
 }

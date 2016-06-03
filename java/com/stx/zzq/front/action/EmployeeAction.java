@@ -31,11 +31,34 @@ public class EmployeeAction extends BaseAction {
 	private Integer rows;
 	private Integer page;
 	
+	public String loginView() {
+		return "loginView";
+	}
+	
 	public String login() {
-		String id = request.getParameter("employeeId");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 		Employee employee = new Employee();
-		employee = empService.findById(id);
-		return "findById";
+		employee = empService.findByName(username);
+		if(CommonUtils.isEmpty(username)) {
+			request.setAttribute("error", "用户名不能为空！！！");
+			return "loginView";
+		}
+		if(CommonUtils.isEmpty(password)) {
+			request.setAttribute("error", "密码不能为空！！！");
+			return "loginView";
+		}
+		if(CommonUtils.isEmpty(employee)) {
+			request.setAttribute("error", "用户不存在！！！");
+			return "loginView";
+		}
+		if(!password.equals(employee.getPassword())) {
+			request.setAttribute("error", "密码错误！！！");
+			return "loginView";
+		}
+		session.setAttribute("employee", employee);
+		System.out.println(employee);
+		return SUCCESS;
 	}
 
 	/* 通过id查询员工 */

@@ -35,7 +35,7 @@
 			<ref bean="countWageServiceJobDetails" />
 		</property>
 		<property name="cronExpression">
-			<value>0 * 0 * * ?</value>
+			<value>0 0/10 17 * * ?</value>
 		</property>
 	</bean>
 

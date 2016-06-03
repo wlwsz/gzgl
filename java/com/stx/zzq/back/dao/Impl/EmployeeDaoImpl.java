@@ -85,4 +85,16 @@ public class EmployeeDaoImpl extends BaseDao implements EmployeeDao {
 		return listEmployee;
 	}
 
+	// 通过名字查询对象
+	@Override
+	public Employee findByName(String username) {
+		// TODO Auto-generated method stub
+		String hql = "From Employee emp where emp.name = ?";
+		Query query = getSession().createQuery(hql);
+		query.setString(0, username);
+		Employee emp = new Employee();
+		emp = (Employee) query.uniqueResult();
+		return emp;
+	}
+
 }

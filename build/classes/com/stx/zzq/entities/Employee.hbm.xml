@@ -8,6 +8,9 @@
 			<generator class="assigned" />
 		</id>
 		<property name="name" column="name" type="java.lang.String" />
+		<property name="password" column="password" type="java.lang.String" />
+		<property name="positionId" column="position_id" type="java.lang.String"/>
+		<property name="positionName" column="position_name" type="java.lang.String"/>
 		<property name="cardNumber" column="card_number" type="java.lang.String" />
 		<property name="nation" column="nation" type="java.lang.String" />
 		<property name="sex" column="sex" type="java.lang.String" />
@@ -20,8 +23,6 @@
 		<property name="editTime" column="edit_time" type="java.lang.String" />
 		<property name="iconPath" column="icon_path" type="java.lang.String" />
 		<property name="memo" column="memo" type="java.lang.String" />
-		<property name="positionId" column="position_id" type="java.lang.String"/>
-		<property name="positionName" column="position_name" type="java.lang.String"/>
 	</class>
 </hibernate-mapping>
  

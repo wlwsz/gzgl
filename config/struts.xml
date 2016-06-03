@@ -137,6 +137,10 @@
 	<!-- 普通用户-员工操作 -->
 	<package name="front" namespace="/" extends="struts-default">
 		<action name="front_*" class="front.EmployeeAction" method="{1}">
+			<result name="loginView">/front/employee_login.jsp</result>
+			<result name="success">/front/employee_person.jsp</result>
+		</action>
+		<action name="frontS_*" class="front.SalaryAction" method="{1}">
 			<result name="success">/front/employee_person.jsp</result>
 		</action>
 	</package>

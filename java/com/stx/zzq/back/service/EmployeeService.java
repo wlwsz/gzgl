@@ -15,6 +15,8 @@ public interface EmployeeService {
 	/* 通过id查询员工 */
 	Employee findById(String id);
 
+	Employee findByName(String username);
+
 	/* 修改员工信息员工 */
 	void updEmp(Employee updEmp);
 
