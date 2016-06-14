@@ -22,6 +22,7 @@
     <link href="front/carousel.css" rel="stylesheet">
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="front/login-res/ie-emulation-modes-warning.js"></script>
+    <script src="front/login-res/bootstrap-table.min.js"></script>
     <script type="text/javascript">
     	$(document).ready(function() {
 	   		<%-- $.ajax({
@@ -95,7 +96,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h2 class="sub-header">工资记录</h2>
           <div class="table-responsive">
-            <table class="table table-striped" data-url="<%=path %>/frontS_findByEmpId.action">
+            <table class="table table-striped" data-toggle="table" data-url="<%=path %>/frontS_findByEmpId.action">
               <thead>
                 <tr>
 	                <th field="salaryId" hidden="true">编号</th>

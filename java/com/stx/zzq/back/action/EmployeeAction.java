@@ -42,6 +42,7 @@ public class EmployeeAction extends BaseAction {
 		addEmp.setCardNumber(request.getParameter("cardNumber"));
 		addEmp.setNation(request.getParameter("nation"));
 		addEmp.setBirthday(request.getParameter("birthday"));
+		addEmp.setPassword("000000");
 		String positionId = request.getParameter("positionId");
 		Position posit = new Position();
 		posit = posService.findById(positionId);
